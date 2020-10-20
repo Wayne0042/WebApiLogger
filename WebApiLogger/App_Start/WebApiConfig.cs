@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Serilog;
+using Serilog.Formatting.Compact;
+using System;
+using System.IO;
+using System.Text;
 using System.Web.Http;
-using System.Web.Http.Cors;
+using WebApiLogger.App_Start;
 
 namespace WebApiLogger
 {
@@ -10,8 +12,21 @@ namespace WebApiLogger
     {
         public static void Register(HttpConfiguration config)
         {
+            //create serilog logger
+            string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"ApiLog\.txt");
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File(new CustomCompactJsonFormatter(), logPath,
+                    rollingInterval: RollingInterval.Day,
+                    fileSizeLimitBytes: null,
+                    retainedFileCountLimit: null,
+                    encoding: Encoding.UTF8)
+                .CreateLogger();
+
             // Web API 設定和服務
             config.EnableCors();
+
+            config.MessageHandlers.Add(new LogHandler());
 
             // Web API 路由
             config.MapHttpAttributeRoutes();
