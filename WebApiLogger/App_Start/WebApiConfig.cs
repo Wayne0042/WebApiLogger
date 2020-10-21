@@ -18,8 +18,9 @@ namespace WebApiLogger
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(new CustomCompactJsonFormatter(), logPath,
                     rollingInterval: RollingInterval.Day,
-                    fileSizeLimitBytes: null,
                     retainedFileCountLimit: null,
+                    rollOnFileSizeLimit: true,
+                    shared: true,
                     encoding: Encoding.UTF8)
                 .CreateLogger();
 
