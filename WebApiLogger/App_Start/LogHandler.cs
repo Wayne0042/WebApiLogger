@@ -12,13 +12,13 @@ namespace WebApiLogger.App_Start
         {
             Guid guid = Guid.NewGuid();
 
-            //寫request log
+            //write request log
             Log.Information("{@Method}, {@RequestUri}, {@Content}, {@guid}", request.Method.Method, request.RequestUri, await request.Content.ReadAsStringAsync(), guid);
 
             // Call the inner handler.
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
-            //寫response log
+            //write response log
             Log.Information("{@guid}, {@StatusCode}, {@Content}", guid, response.StatusCode, await response.Content.ReadAsStringAsync());
 
             return response;
