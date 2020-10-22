@@ -5,18 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>web api test</title>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <h1>test</h1>
 
     <script>
-        function callApi() {
+        function callByXmlHttp() {
 
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.querySelector('h1').innerText = this.responseText;
+                    console.log(this.responseText);
+                    //document.querySelector('h1').innerText = this.responseText;
                 }
             };
 
@@ -24,7 +27,21 @@
             xhttp.send();
         }
 
-        callApi();
+        function callByAjax() {
+            $.ajax({
+                url: 'http://localhost:13381/api/TestLog/TestGet',
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+
+        callByXmlHttp();
+
+        callByAjax();
     </script>
 </body>
 
